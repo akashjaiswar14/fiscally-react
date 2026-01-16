@@ -1,4 +1,5 @@
-export const BASE_URL="https://fiscally.onrender.com/api/v1.0";
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 // export const BASE_URL="http://localhost:8181/api/v1.0";
 const CLOUDINARY_CLOUD_NAME="dyc6vpfpo";
 
