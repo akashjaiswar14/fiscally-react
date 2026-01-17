@@ -1,52 +1,136 @@
-import React, { useContext } from 'react'
-import { Toaster } from 'react-hot-toast';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Home from './pages/Home.jsx'
-import Income from './pages/Income.jsx'
-import Expense from './pages/Expense.jsx'
-import Category from './pages/Category.jsx'
-import Login from './pages/Login.jsx'
-import Signup from './pages/Signup.jsx'
-import Filter from './pages/Filter.jsx'
-import { AppContext } from './context/AppContext.jsx';
-import HomePage from './pages/HomePage.jsx';
+// import React, { useContext } from 'react'
+// import { Toaster } from 'react-hot-toast';
+// import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+// import Home from './pages/Home.jsx'
+// import Income from './pages/Income.jsx'
+// import Expense from './pages/Expense.jsx'
+// import Category from './pages/Category.jsx'
+// import Login from './pages/Login.jsx'
+// import Signup from './pages/Signup.jsx'
+// import Filter from './pages/Filter.jsx'
+// import { AppContext } from './context/AppContext.jsx';
+// import HomePage from './pages/HomePage.jsx';
 
+
+// const App = () => {
+//   const { loading } = useContext(AppContext);
+
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
+//   return (
+//     <>
+//       <Toaster />
+//       <BrowserRouter>
+//         <Routes>
+//           <Route path='/' element={<Root />}/>
+//           <Route path="/dashboard" element={<HomePage />} />
+//           <Route path="/income" element={<Income />} />
+//           <Route path="/expense" element={<Expense />} />
+//           <Route path="/category" element={<Category />} />
+//           <Route path="/login" element={<Login />}/>
+//           <Route path="/signup" element={<Signup />}/>
+//           <Route path="/filter" element={<Filter />}/>
+//         </Routes>
+//       </BrowserRouter>
+      
+    
+//     </>
+//   )
+// }
+
+// const Root = ()=>{
+//   const isAuthenticated = !!localStorage.getItem("token");
+//   return isAuthenticated ? (
+//     <Navigate to="/dashboard"/>
+//   ) : (
+//     <Navigate to="/login" />
+//   )
+// }
+
+// export default App
+
+
+import React, { useContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+import LandingPage from "./pages/LandingPage.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+
+import Income from "./pages/Income.jsx";     // DASHBOARD
+import Expense from "./pages/Expense.jsx";
+import Category from "./pages/Category.jsx";
+import Filter from "./pages/Filter.jsx";
+
+import ProtectedRoute from "./util/ProtectedRoute.jsx";
+import { AppContext } from "./context/AppContext.jsx";
 
 const App = () => {
   const { loading } = useContext(AppContext);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+
   return (
     <>
       <Toaster />
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Root />}/>
-          <Route path="/dashboard" element={<HomePage />} />
-          <Route path="/income" element={<Income />} />
-          <Route path="/expense" element={<Expense />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/login" element={<Login />}/>
-          <Route path="/signup" element={<Signup />}/>
-          <Route path="/filter" element={<Filter />}/>
+          {/* Public */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* Protected */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Income /> {/* DASHBOARD */}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/income"
+            element={
+              <ProtectedRoute>
+                <Income />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/expense"
+            element={
+              <ProtectedRoute>
+                <Expense />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/category"
+            element={
+              <ProtectedRoute>
+                <Category />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/filter"
+            element={
+              <ProtectedRoute>
+                <Filter />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
-      
-    
     </>
-  )
-}
+  );
+};
 
-const Root = ()=>{
-  const isAuthenticated = !!localStorage.getItem("token");
-  return isAuthenticated ? (
-    <Navigate to="/dashboard"/>
-  ) : (
-    <Navigate to="/login" />
-  )
-}
-
-export default App
-
+export default App;
